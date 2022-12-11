@@ -1,13 +1,9 @@
-function [goalP] = potentialField(p_end)
+function [goalP] = potentialField(goalTheta,n)
 %%Potential field calculation
 % Tabulate potential field in a gridded joint space
-n = 5;
 theta_1_test = linspace(-50,50,n)*pi/180;
 theta_2_test = linspace(-50,50,n)*pi/180;
 theta_3_test = linspace(0.028,0.15,n);
-% define goal theta values
-goalTheta = analyticalIK(p_end');
-goalTheta = [0.5 -0.5 0.06]
 %Assign Obstacle Potential Scale:
 goalP = [];
 % x = [];
@@ -32,6 +28,7 @@ for i = 1:length(theta_1_test)
         end
     end
 end
+figure()
 scatter3(goalP(:,1),goalP(:,2),goalP(:,3),[],goalP(:,4)./max(goalP(:,4)),'o','MarkerFaceAlpha',0.2);
 xlabel('\Theta_1')
 ylabel('\Theta_2')
