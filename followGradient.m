@@ -1,15 +1,15 @@
-function trajectory = followGradient(p,gradient,goalTheta)
+function trajectory = followGradient(startTheta,gradient,goalTheta)
     %Inputs: p - starting position (js), gradient - gradient that you want to follow
     %Outputs: trajectory - overall trajectory after following gradient
     i =1;
     e = 0.02*(0.15-0028);
-    while(norm(p-goalTheta)>e && i < 100) %Set precision based on theta3 bounds
-        trajectory(i,:) = p;
-        row = findClosest(p,gradient)
-        push = gradient(row,5:7)
-        p = p + gradient(row,5:7)
+    while(norm(startTheta-goalTheta)>e && i < 100) %Set precision based on theta3 bounds
+        trajectory(i,:) = startTheta;
+        row = findClosest(startTheta,gradient);
+        startTheta = startTheta + gradient(row,5:7)';
         i = i+1;
     end
+    save('Trajectory.mat','trajectory')
 end
 
 function row = findClosest(p,gradient)
