@@ -1,5 +1,7 @@
 %% Set-up:
-
+clc
+clear
+close all
 %Create Start Position:
 p_start = [0.004; 0; -0.0223];
 
@@ -10,33 +12,30 @@ p_start = [0.004; 0; -0.0223];
 p_end = [0; 0; -0.040];
 
 %Define goal theta values
-[thetaSet] = analyticalIK(p_end');
+goalTheta = analyticalIK(p_end');
 
 %Create Obstacle:
 
 %%Potential Field Calculations:
-
+n = 7;
 %Calculate the goal potential field:
-[goalP] = potentialField(p_end);
+[goalP] = potentialField(p_end,n);
 
 %Calculate the obstacle potential field:
 
 %Find the Overall Potential Field:
+totalP = goalP;
+%% Path Planning:
 
-% %% Path Planning:
-% i = 1;
-% minimum = 0;
-% q(:,i) = [t_start2(1),t_start2(2),t_start2(3)];
-% while ~minimum
-%     %Find next Step Through the Potential Field:
-%     q(:,i+1) = q(:,i)+gradientStep(q(:,i),totalP,1); %gradient does q(:,i) + a step down the gradient
-%     %disp(['New Position: ' num2str(q(1,i+1)) ', ' num2str(q(2,i+1))])
-%     i=i+1; 
-%     %Check if the position is a minima:
-%     if ~any(gradient(q(:,i),total_pot,theta_1_test,0))
-%         minimum =1;
-%     end    
-% end
+%Calculate gradient for every potential in field:
+gradient = getGradient(totalP,n);
+
+%Remove boundary of potential field and gradient:
+slimmedGradient = gradient((n+n^2+2):(n-2)*n^2+(n-2)*n+(n-1),:);
+%Plot the gradient:
+quiver3(gradient(:,1),gradient(:,2),gradient(:,3),gradient(:,5),gradient(:,6),gradient(:,7))
+%Step through gradient:
+trajectory = followGradient(p,gradient);
 
 %Move the dVRK through the Trajectory:
 %move_dvrk(q);
