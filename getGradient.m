@@ -24,7 +24,7 @@ function [gradient] = nearestNeighbor(field,row,n)
               theta3_new = field(currentRow,3);
               P_new = field(currentRow,4);
               if P_new < P_curr
-                  gradient = (P-P_new).*[theta1-theta1_new,theta2-theta2_new,theta3-theta3_new];
+                  gradient = (P_new-P)./[theta1_new-theta1,theta2_new-theta2,theta3_new-theta3];
                   P_curr = P_new;
               end
           end
