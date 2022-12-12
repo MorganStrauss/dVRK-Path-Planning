@@ -23,3 +23,15 @@ for j=1:length(t1)
     commanded_joints_all(:,:,j) = r.measured_js()
     measured_all(:,:,j) = r.measured_cp()
 end
+for j=length(t1):-1:1
+    if abs(t1(j)) < deg2rad(51) && abs(t2(j)) < deg2rad(51) && abs(d3(j)) < 0.15
+        goal = [t1(j);t2(j);d3(j);0;0;0];
+    end
+    goal_all(:,j) = goal;
+%     goal = [deg2rad(m(j));deg2rad(k(j));0.07;0;0;0];
+    r.move_jp(goal).wait();
+    commanded_joints_all(:,:,j) = r.measured_js()
+    measured_all(:,:,j) = r.measured_cp()
+end
+
+end
